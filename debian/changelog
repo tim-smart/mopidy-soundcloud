@@ -1,3 +1,9 @@
+mopidy-soundcloud (1.0.18-0) UNRELEASED; urgency=low
+
+  * New upstream release.
+
+ -- Stein Magnus Jodal <stein.magnus@jodal.no>  Sat, 11 Jan 2014 23:04:32 +0100
+
 mopidy-soundcloud (1.0.16-0mopidy3) unstable; urgency=low
 
   * Switch from mopidy-soundcloud.pydist to pydist-overrides for compatibility
