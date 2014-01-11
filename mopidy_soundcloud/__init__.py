@@ -1,29 +1,13 @@
 from __future__ import unicode_literals
 
 import os
+
 from mopidy import ext, config
 from mopidy.exceptions import ExtensionError
 
 
-__doc__ = """A extension for playing music from SoundCloud.
-
-This extension handles URIs starting with ``soundcloud:`` and enables you,
-to play music from SoundCloud web service.
-
-See https://github.com/dz0ny/mopidy-soundcloud/ for further instructions on
-using this extension.
-
-**Issues:**
-
-https://github.com/dz0ny/mopidy-soundcloud/issues
-
-**Dependencies:**
-
-requests
-
-"""
-
-__version__ = '1.0.16'
+__version__ = '1.0.18'
+__url__ = 'https://github.com/mopidy/mopidy-soundcloud'
 
 
 class SoundCloudExtension(ext.Extension):

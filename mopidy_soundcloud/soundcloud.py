@@ -1,6 +1,3 @@
-#!/usr/local/bin/python
-# -*- coding: utf-8 -*-
-
 from __future__ import unicode_literals
 import logging
 import time
@@ -10,7 +7,7 @@ import requests
 from requests.exceptions import RequestException
 from mopidy.models import Track, Artist, Album
 
-logger = logging.getLogger('mopidy.backends.soundcloud.client')
+logger = logging.getLogger(__name__)
 
 
 class cache(object):
@@ -63,12 +60,8 @@ class SoundCloudClient(object):
             logger.error(
                 'Authentication error: %s. Check your auth_token!' % e)
 
-    @cache()
     def get_user(self):
-        try:
-            return self._get('me.json')
-        except Exception as e:
-            logger.error('SoundCloud error: %s' % e)
+        return self._get('me.json')
 
     # Private
 
@@ -176,15 +169,9 @@ class SoundCloudClient(object):
         url = 'https://api.soundcloud.com/%s' % url
 
         logger.debug('Requesting %s' % url)
-        req = self.http_client.get(url)
-        if req.status_code != 200:
-            raise logger.error('Request %s, failed with status code %s' % (
-                url, req.status_code))
-        try:
-            return req.json()
-        except RequestException as e:
-            raise logger.error('Request %s, failed with error %s' % (
-                url, e))
+        res = self.http_client.get(url)
+        res.raise_for_status()
+        return res.json()
 
     def sanitize_tracks(self, tracks):
         return filter(None, tracks)
