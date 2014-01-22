@@ -1,3 +1,9 @@
+mopidy-soundcloud (1.1.0-1) unstable; urgency=low
+
+  * New upstream release.
+
+ -- Stein Magnus Jodal <stein.magnus@jodal.no>  Wed, 22 Jan 2014 21:47:38 +0100
+
 mopidy-soundcloud (1.0.18-1) unstable; urgency=low
 
   * New upstream release.
