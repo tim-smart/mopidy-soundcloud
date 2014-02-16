@@ -45,16 +45,7 @@ Configuration
 
     [soundcloud]
     auth_token = 1-1111-1111111
-
-#. Extra playlists from http://www.soundcloud.com/explore can be retrieved by
-   setting the ``soundcloud/explore`` config value. For example, if you want
-   Smooth Jazz from https://soundcloud.com/explore/jazz%2Bblues your entry
-   would be "jazz%2Bblues/Smooth Jazz". Example config::
-
-    [soundcloud]
-    auth_token = 1-1111-1111111
-    explore = electronic/Ambient, pop/New Wave, rock/Indie
-
+    explore_songs = 25
 
 Project resources
 =================
@@ -62,11 +53,37 @@ Project resources
 - `Source code <https://github.com/mopidy/mopidy-soundcloud>`_
 - `Issue tracker <https://github.com/mopidy/mopidy-soundcloud/issues>`_
 - `Download development snapshot
-  <https://github.com/mopidy/mopidy-soundcloud/tarball/master#egg=Mopidy-SoundCloud-dev>`_
+  <https://github.com/mopidy/mopidy-soundcloud/archive/master.tar.gz#egg=Mopidy-SoundCloud-dev>`_
 
 
 Changelog
 =========
+
+v1.2.0 (2014-02-16)
+-------------------
+
+- Deprecated ``explore`` and ``explore_pages`` config values.
+
+- Extension is now using Mopidy's virtual filesystem to expose music from your
+  SoundCloud account instead of fake playlists. See the "Browse" or "Files"
+  option in your MPD client.
+
+  In the virtual file system you can browse:
+
+  - The "Stream" with tracks from the users you follow.
+
+  - All "Explore" sections.
+
+  - Your followers and their shared tracks.
+
+  - Your liked tracks.
+
+  - Your sets.
+
+- Add search support.
+
+- Add support for looking up music by SoundCloud URLs through searching for the
+  URL as a file name.
 
 v1.1.0 (2014-01-20)
 -------------------
