@@ -1,11 +1,14 @@
 from __future__ import unicode_literals
 import logging
+import re
+import string
 import time
 from urllib import quote_plus
 import collections
 
 import requests
 from mopidy.models import Track, Artist, Album
+import unicodedata
 
 logger = logging.getLogger(__name__)
 
@@ -188,20 +191,26 @@ class SoundCloudClient(object):
     def sanitize_tracks(self, tracks):
         return filter(None, tracks)
 
+    def safe_url(self, uri):
+        valid_chars = "-_.() %s%s" % (string.ascii_letters, string.digits)
+        safe_uri = unicodedata.normalize('NFKD', uri).encode(
+            'ASCII', 'ignore'
+        )
+        return re.sub('\s+', ' ',
+                      ''.join(c for c in safe_uri if c in valid_chars)
+                      ).strip()
+
     @cache()
     def parse_track(self, data, remote_url=False):
         if not data:
             return []
         if not data['streamable']:
             logger.info(
-                "'%s' can't be streamed from SoundCloud" % data.get('title'))
+                "'%s' can't be streamed from SoundCloud" % data.get('title')
+            )
             return []
         if not data['kind'] == 'track':
-            logger.debug("'%s' is not a track" % data.get('title'))
-            return []
-        if not self.can_be_streamed(data['stream_url']):
-            logger.info(
-                "'%s' can't be streamed from SoundCloud" % data.get('title'))
+            logger.debug('%s is not track' % data.get('title'))
             return []
 
         # NOTE kwargs dict keys must be bytestrings to work on Python < 2.6.5
@@ -229,19 +238,24 @@ class SoundCloudClient(object):
                 artist_kwargs[b'name'] = data.get('user').get('username')
 
             album_kwargs[b'name'] = 'SoundCloud'
-            #album_kwargs[b'url'] = data.get('permalink_url')
 
         if 'date' in data:
             track_kwargs[b'date'] = data['date']
 
         if remote_url:
+            if not self.can_be_streamed(data['stream_url']):
+                logger.info(
+                    "'%s' can't be streamed from SoundCloud" %
+                    data.get('title'))
+                return []
             track_kwargs[b'uri'] = self.get_streamble_url(data['stream_url'])
         else:
             track_kwargs[b'uri'] = 'soundcloud:song/%s.%s' % (
-                data.get('title'), data.get('id')
+                self.safe_url(data.get('title')), data.get('id')
             )
 
         track_kwargs[b'length'] = int(data.get('duration', 0))
+        track_kwargs[b'comment'] = data.get('permalink_url', '')
 
         if artist_kwargs:
             artist = Artist(**artist_kwargs)
