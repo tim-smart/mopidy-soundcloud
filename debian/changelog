@@ -1,3 +1,9 @@
+mopidy-soundcloud (1.2.1-2) unstable; urgency=low
+
+  * Add missing dependency on gstreamer0.10-plugins-ugly. (Closes: #741317)
+
+ -- Stein Magnus Jodal <stein.magnus@jodal.no>  Tue, 11 Mar 2014 22:12:44 +0100
+
 mopidy-soundcloud (1.2.1-1) unstable; urgency=low
 
   * New upstream release.
