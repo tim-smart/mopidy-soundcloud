@@ -138,7 +138,7 @@ class SoundCloudClient(object):
 
     # Public
     @cache()
-    def get_track(self, track_id, streamable=False):
+    def get_track(self, track_id, streamable=True):
         logger.debug('Getting info for track with id %s' % track_id)
         try:
             return self.parse_track(
@@ -163,7 +163,7 @@ class SoundCloudClient(object):
         )
         tracks = []
         for track in search_results:
-            tracks.append(self.parse_track(track, False))
+            tracks.append(self.parse_track(track))
         return self.sanitize_tracks(tracks)
 
     def parse_results(self, res):
@@ -201,7 +201,7 @@ class SoundCloudClient(object):
                       ).strip()
 
     @cache()
-    def parse_track(self, data, remote_url=False):
+    def parse_track(self, data, remote_url=True):
         if not data:
             return []
         if not data['streamable']:
